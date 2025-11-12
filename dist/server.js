@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 const items = [];
@@ -35,5 +35,5 @@ app.delete('/api/items/:id', (req, res) => {
     const deletedItem = items.splice(itemIndex, 1)[0];
     res.json(deletedItem);
 });
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
 export { app, items };

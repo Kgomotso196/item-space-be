@@ -1,19 +1,19 @@
-import express from 'express'
+import express, { Request, Response } from 'express'
 import cors from 'cors'
 
 const app = express()
-const PORT = 3000
+const PORT = process.env.PORT || 3000
 
 app.use(cors())
 app.use(express.json())
 
 const items: { id: number; name: string }[] = []
 
-app.get('/api/items', (req, res) => {
+app.get('/api/items', (req: Request, res: Response) => {
   res.json(items)
 })
 
-app.post('/api/items', (req, res) => {
+app.post('/api/items', (req: Request, res: Response) => {
   console.log('POST /api/items body:', req.body)
   const { name } = req.body
   if (!name) return res.status(400).json({ error: 'Name is required' })
@@ -22,7 +22,7 @@ app.post('/api/items', (req, res) => {
   res.status(201).json(newItem)
 })
 
-app.put('/api/items/:id', (req, res) => {
+app.put('/api/items/:id', (req: Request, res: Response) => {
   const id = Number(req.params.id)
   const { name } = req.body
   const itemIndex = items.findIndex(item => item.id === id)
@@ -31,10 +31,10 @@ app.put('/api/items/:id', (req, res) => {
   res.json(items[itemIndex])
 })
 
-app.delete('/api/items/:id', (req, res) => {
+app.delete('/api/items/:id', (req: Request, res: Response) => {
   const id = Number(req.params.id)
   const itemIndex = items.findIndex(item => item.id === id)
-  
+
   if (itemIndex === -1) {
     return res.status(404).json({ error: 'Item not found' })
   }
@@ -43,6 +43,6 @@ app.delete('/api/items/:id', (req, res) => {
   res.json(deletedItem)
 })
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`))
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`))
 
-export { app, items };
+export { app, items }
